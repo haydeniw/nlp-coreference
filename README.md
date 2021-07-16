@@ -28,13 +28,6 @@ Ultimately, it is designed to be hosted on a web server for more general usage.
 code blocks for commands
 ```
 
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
 ## Authors
 
 Contributors names and contact info

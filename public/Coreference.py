@@ -1,4 +1,5 @@
 from allennlp.predictors.predictor import Predictor
+from Predictor import Prediction
 import allennlp_models.tagging
 
 
@@ -9,7 +10,8 @@ def main():
 	print(result)
 
 class Coreference:
-	def __init__(self, context, currentSentence):
+	def __init__(self, prediction, currentSentence):
+		self.prediction = prediction
 		self.context = context
 		self.currentSentence = currentSentence
 		self.broad_refs = ["he", "she", "this", "that", "them", "it"]
@@ -17,7 +19,6 @@ class Coreference:
 
 	def generateClusters(self):
 		#function modified from: https://github.com/ananyagup/AllenNLP-Coreference-Resolution-in-Python-Readable-clusters
-		predictor = Predictor.from_path("https://storage.googleapis.com/allennlp-public-models/coref-spanbert-large-2021.03.10.tar.gz")
 		#predictorOutput = predictor.predict(document="What is your recommended color? The recommended color is red. Please use it.")
 		predictorOutput = predictor.predict(document=self.context)
 	
