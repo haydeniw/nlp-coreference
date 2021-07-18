@@ -4,15 +4,14 @@ import allennlp_models.tagging
 
 
 def main():
-	print("hello")
 	example = Coreference("What is your recommended color? The recommended color is red. Please use it.", "Please use it.")
 	result = example.generateReferences()
 	print(result)
 
 class Coreference:
-	def __init__(self, prediction, currentSentence):
-		self.prediction = prediction
-		self.context = context
+	def __init__(self, predictorOutput, currentSentence):
+		self.predictorOutput = predictorOutput
+		#self.context = context
 		self.currentSentence = currentSentence
 		self.broad_refs = ["he", "she", "this", "that", "them", "it"]
 		self.coreferences = []
@@ -20,10 +19,8 @@ class Coreference:
 	def generateClusters(self):
 		#function modified from: https://github.com/ananyagup/AllenNLP-Coreference-Resolution-in-Python-Readable-clusters
 		#predictorOutput = predictor.predict(document="What is your recommended color? The recommended color is red. Please use it.")
-		predictorOutput = predictor.predict(document=self.context)
-	
-		clusters = predictorOutput['clusters']
-		document = predictorOutput['document']
+		clusters = self.predictorOutput['clusters']
+		document = self.predictorOutput['document']
 		n = 0
 		doc = {}
 		for obj in document:
@@ -58,7 +55,7 @@ class Coreference:
 		clus_all = self.generateClusters()
 		for cluster in clus_all:
 			newW = ""
-			for index, word in enumerate(cluster):
+			for word in enumerate(cluster):
 				if word[0] in self.broad_refs: #only supports a broad reference that is 1 word
 					for newWord in cluster:
 						if len(newWord) == 1:
@@ -67,7 +64,6 @@ class Coreference:
 						else:
 							newW =  ' '.join(newWord)
 							modified.append(self.currentSentence.replace(word[0], newW))
-					#modified = [currSentence.replace(word, newWord) for newWord in cluster if newWord not in broad_refs]
 					self.coreferences = list(set(modified))
 					return self.coreferences
 
